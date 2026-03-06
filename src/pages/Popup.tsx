@@ -78,10 +78,25 @@ export default function Popup() {
     setRecordingKey(null);
   };
 
-  const addDomain = (domain: string) => {
-    if (!domain) return;
-    const cleanDomain = domain.trim().toLowerCase();
-    if (!settings.enabledDomains.includes(cleanDomain)) {
+  const addDomain = (input: string) => {
+    if (!input) return;
+    let cleanDomain = input.trim().toLowerCase();
+    
+    try {
+      // If it's a URL or looks like one, extract the hostname
+      const urlToParse = cleanDomain.includes("://") ? cleanDomain : `http://${cleanDomain}`;
+      const url = new URL(urlToParse);
+      cleanDomain = url.hostname;
+      
+      // Remove 'www.' if present to be more broad
+      if (cleanDomain.startsWith("www.")) {
+        cleanDomain = cleanDomain.substring(4);
+      }
+    } catch (e) {
+      // Fallback to the trimmed input if URL parsing fails
+    }
+
+    if (cleanDomain && !settings.enabledDomains.includes(cleanDomain)) {
       const newDomains = [...settings.enabledDomains, cleanDomain];
       saveSettings({ ...settings, enabledDomains: newDomains });
     }
