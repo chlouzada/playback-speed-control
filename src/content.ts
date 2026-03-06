@@ -1,4 +1,8 @@
 import browser from "webextension-polyfill";
+import { DEFAULT_SETTINGS } from "./pages/Popup";
+
+
+
 
 interface Shortcuts {
   increase: string;
@@ -12,24 +16,14 @@ interface Settings {
   increment: number;
 }
 
-let settings: Settings = {
-  shortcuts: {
-    increase: "d",
-    decrease: "s",
-    reset: "r",
-  },
-  enabledDomains: ["youtube.com"],
-  increment: 0.1,
-};
+let settings: Settings = { ...DEFAULT_SETTINGS };
 
 let overlayTimeout: NodeJS.Timeout | null = null;
 let overlayElement: HTMLDivElement | null = null;
 
 const init = async () => {
-  const stored = await browser.storage.sync.get(["shortcuts", "enabledDomains", "increment"]);
-  if (stored.shortcuts) settings.shortcuts = stored.shortcuts;
-  if (stored.enabledDomains) settings.enabledDomains = stored.enabledDomains;
-  if (stored.increment) settings.increment = stored.increment;
+  const stored = await browser.storage.sync.get(DEFAULT_SETTINGS);
+  settings = stored as Settings;
 };
 
 browser.storage.onChanged.addListener((changes) => {

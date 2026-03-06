@@ -14,13 +14,13 @@ interface Settings {
   increment: number;
 }
 
-const DEFAULT_SETTINGS: Settings = {
+export const DEFAULT_SETTINGS: Settings = {
   shortcuts: {
     increase: "d",
     decrease: "s",
     reset: "r",
   },
-  enabledDomains: ["youtube.com"],
+  enabledDomains: ["youtube.com", "twitch.com"],
   increment: 0.25,
 };
 
