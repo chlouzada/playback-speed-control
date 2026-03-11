@@ -1,20 +1,8 @@
 import browser from "webextension-polyfill";
-import { DEFAULT_SETTINGS } from "./pages/Popup";
+import { DEFAULT_SETTINGS, Settings } from "./settings";
 
 
 
-
-interface Shortcuts {
-  increase: string;
-  decrease: string;
-  reset: string;
-}
-
-interface Settings {
-  shortcuts: Shortcuts;
-  enabledDomains: string[];
-  increment: number;
-}
 
 let settings: Settings = { ...DEFAULT_SETTINGS };
 
